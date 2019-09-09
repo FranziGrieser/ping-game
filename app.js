@@ -14,6 +14,8 @@ GAME RULES:
 var scores, roundScore, activePlayer, gamePlaying;
 init();
 
+var previousDice;
+
 document.querySelector('.btn-roll').addEventListener('click', function() {
     if (gamePlaying) {
         var diceDOM = document.querySelector('.dice');
@@ -21,14 +23,20 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         diceDOM.style.display = 'block';
         diceDOM.src = 'dice-' + dice + '.png';
 
-        if (dice !== 1) {
+        if (dice === 6 && previousDice === 6) {
+          scores[activePlayer] = 0;
+          document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+          nextPlayer();
+        } else if (dice !== 1) {
             roundScore += dice;
             document.querySelector('#current-' + activePlayer).textContent = roundScore;
         } else {
             nextPlayer();
         }
+        previousDice = dice;
     }
 });
+
 
 document.querySelector('.btn-hold').addEventListener('click', function() {
     if (gamePlaying) {
@@ -80,3 +88,27 @@ function init() {
     document.querySelector('.player-1-panel').classList.remove('active');
     document.querySelector('.player-0-panel').classList.add('active');
 }
+
+/*
+1. A player looses his ENTIRE score when he rolls two 6 in a row.
+After that it's the next players turn. (Hint: Always save the previous dice
+roll in a separate variable)
+2. Add an input field to the HTML where players can set the winning score, so
+that they can change the predefined score of 100. (Hint: you can read
+that value with the .value property of Javascript)
+3. Add another dice to the game, so that there are two dices now. The player
+looses the current score when one of them is a 1. (Hint: you need some
+CSS to position the second one - have a look at the first one.)
+*/
+//
+// function twoSixesRule() {
+//     var previousDice = dice.last
+//     if (gamePlaying) {
+//         if (previousDice && dice === 6) {
+//             roundScore = 0;
+//         } else {
+//           roundScore += dice;
+//           document.querySelector('#current-' + activePlayer).textContent = roundScore;
+//         }
+//   }
+// }
