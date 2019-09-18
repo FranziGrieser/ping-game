@@ -1,6 +1,6 @@
 
 
-var scores, roundScore, activePlayer, gamePlaying, winningScore;
+var scores, roundScore, activePlayer, gamePlaying;
 init();
 
 var previousDice;
@@ -32,6 +32,15 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
     if (gamePlaying) {
         scores[activePlayer] += roundScore;
         document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+
+        var initScore = document.querySelector('.score').value
+        var winningScore;
+        if (initScore) {
+          winningScore = initScore;
+        } else {
+          winningScore = 100;
+        }
+
         if (scores[activePlayer] >= winningScore) {
             document.querySelector('#name-' + activePlayer).textContent = 'Winner!';
             document.querySelector('.dice').style.display = 'none';
@@ -79,16 +88,9 @@ function init() {
     document.querySelector('.player-0-panel').classList.add('active');
 }
 
-document.querySelector('.score').addEventListener('keypress', function() {
-  winningScore = document.querySelector('.score').value
-});
-
 
 /*
 
-2. Add an input field to the HTML where players can set the winning score, so
-that they can change the predefined score of 100. (Hint: you can read
-that value with the .value property of Javascript)
 3. Add another dice to the game, so that there are two dices now. The player
 looses the current score when one of them is a 1. (Hint: you need some
 CSS to position the second one - have a look at the first one.)
