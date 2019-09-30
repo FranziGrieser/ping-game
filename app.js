@@ -4,26 +4,24 @@ var scores, roundScore, activePlayer, gamePlaying;
 init();
 
 var previousDice;
-// var winningScore = document.querySelector('.score').value
 
 document.querySelector('.btn-roll').addEventListener('click', function() {
     if (gamePlaying) {
-        var diceDOM = document.querySelector('.dice');
+        var diceDOM = document.getElementById('dice1');
+        var diceTwoDOM = document.getElementById('dice2');
         var dice = Math.floor(Math.random() * 6) + 1;
+        var secondDice = Math.floor(Math.random() * 6) + 1;
         diceDOM.style.display = 'block';
+        diceTwoDOM.style.display = 'block';
         diceDOM.src = 'dice-' + dice + '.png';
+        diceTwoDOM.src = 'dice-' + secondDice + '.png';
 
-        if (dice === 6 && previousDice === 6) {
-          scores[activePlayer] = 0;
-          document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
-          nextPlayer();
-        } else if (dice !== 1) {
-            roundScore += dice;
+        if (dice !== 1 && secondDice !== 1) {
+            roundScore += dice + secondDice;
             document.querySelector('#current-' + activePlayer).textContent = roundScore;
         } else {
             nextPlayer();
         }
-        previousDice = dice;
     }
 });
 
@@ -43,7 +41,7 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
 
         if (scores[activePlayer] >= winningScore) {
             document.querySelector('#name-' + activePlayer).textContent = 'Winner!';
-            document.querySelector('.dice').style.display = 'none';
+            hideDice();
             document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
             document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
             gamePlaying = false
@@ -62,7 +60,7 @@ function nextPlayer() {
     document.querySelector('.player-0-panel').classList.toggle('active');
     document.querySelector('.player-1-panel').classList.toggle('active');
 
-    document.querySelector('.dice').style.display = 'none';
+    hideDice();
 }
 
 document.querySelector('.btn-new').addEventListener('click', init);
@@ -73,7 +71,7 @@ function init() {
     roundScore = 0;
     activePlayer = 0;
 
-    document.querySelector('.dice').style.display = 'none';
+    hideDice();
 
     document.getElementById('score-0').textContent = '0';
     document.getElementById('score-1').textContent = '0';
@@ -88,10 +86,7 @@ function init() {
     document.querySelector('.player-0-panel').classList.add('active');
 }
 
-
-/*
-
-3. Add another dice to the game, so that there are two dices now. The player
-looses the current score when one of them is a 1. (Hint: you need some
-CSS to position the second one - have a look at the first one.)
-*/
+function hideDice() {
+  document.getElementById('dice1').style.display = 'none';
+  document.getElementById('dice2').style.display = 'none';
+}
